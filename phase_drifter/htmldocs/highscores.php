@@ -4,33 +4,43 @@
 
 <!-- PHP code starts with forced HTTPS check -->
 <?php
-$servername = "localhost";
-$username = "mforrest1";
-$password = "mforrest1";
-$dbname = "mforrest1";
+$host = '127.0.0.1';
+$db   = 'pddb';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+     $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 
-$sql = "SELECT * from pdhighscores ORDER BY Score DESC LIMIT 10;";
-$result = $conn->query($sql);
-
-//Go through each data entry and put its content in a HTML table row
-if ($result->num_rows > 0) {
-    // output data of each row
-    while(($row = $result->fetch_assoc())&&($tenCount<10)) {
-		$namesTemp .= "<li>".$row['Initials']."</li>";
-		$scoresTemp .= "<li>".$row['Score']."</li>";
+//Fetch all 10 possible entries
+$scores = $pdo->query('SELECT * from highscores ORDER BY hs_score DESC LIMIT 10')->fetchAll();
+if($scores){
+	//iterate through each entry
+	foreach ($scores as $row)
+	{
+		$namesTemp .= "<li>".$row['hs_initials']."</li>";
+		$scoresTemp .= "<li>".$row['hs_score']."</li>";
 	}
-} else {
-   $namesTemp = "0 results";
-   $scoreTemp = "0 results";
 }
-$conn->close();
+//If no entries found
+else{
+	$namesTemp = "0 results";
+	$scoreTemp = "0 results";
+}
+//Close the connection
+$conn = null;
 ?>
 
 
