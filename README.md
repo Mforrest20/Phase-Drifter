@@ -2,12 +2,12 @@
 This is a fork of the original Phase Drifter project
 
 Plans for this fork:<br>
--Replace MySQLi with PDO<br>
+~~-Replace MySQLi with PDO~~Done<br>
 -Refactor highscore cookie:<br>
   -replace multiple cookies with one containing JSON object<br>
   -use expire time to verfiy cookie in PHP<br>
 -Add more levels<br>
--Remove test folder
+~~-Remove test folder~~Done
 
-(old note:)
-Please use the phase_drifter folder to access the project documents. test_level folder can be ignored. 
+NOTE:
+This project's files and folders must be placed in the root directory of the server for proper function!
