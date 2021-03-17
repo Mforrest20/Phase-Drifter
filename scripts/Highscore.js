@@ -6,6 +6,20 @@ function setCookies(newName, hScore, redirect){
 		document.cookie = 'newScore=' + hScore + ";" + expires + ";path=./htmldocs";
 		document.cookie = 'showScore=' + redirect + ";" + expires + ";path=./htmldocs";
 	}
+	
+function setCookie(newName, hScore, redirect){
+		//Make cookie expire after 10 mins for testing (CHANGE TO A FEW SECONDS)
+		var expire = new Date();
+		expire.setTime(expire.getTime() + (10*60*1000));
+		var expireUTC = expire.toUTCString();
+		
+		//Create obj to turn into JSON
+		var cookieObj = {"newName":newName, "newScore":hScore, "nextPage":redirect, "expire":expireUTC};
+		var jsonStr = JSON.stringify(cookieObj);
+		
+		//Create cookie
+		document.cookie = 'phasedrifter-hs=' + jsonStr + ";" + expireUTC + ";path=./";
+	}
 
 class Highscore extends Phaser.Scene {
     constructor() {
@@ -87,6 +101,7 @@ class Highscore extends Phaser.Scene {
             this.scene.stop('InputPanel');
             this.scene.stop('Highscore');
 			setCookies(name, highscore, "no");
+			setCookie(name, highscore, "main");
 			window.location.replace("update.php");
         })
 
@@ -107,6 +122,7 @@ class Highscore extends Phaser.Scene {
             this.scene.stop('InputPanel');
             this.scene.stop('Highscore');
             setCookies(name, highscore, "yes");
+			setCookie(name, highscore, "hs");
 			window.location.replace("update.php");
         })
     }
