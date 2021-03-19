@@ -1,12 +1,3 @@
-function setCookies(newName, hScore, redirect){
-		var d = new Date();
-		d.setTime(d.getTime() + (1*24*60*60*1000));
-		var expires = "expires=" + d.toGMTString();
-		document.cookie = 'newName=' + newName + ";" + expires + ";path=./htmldocs";
-		document.cookie = 'newScore=' + hScore + ";" + expires + ";path=./htmldocs";
-		document.cookie = 'showScore=' + redirect + ";" + expires + ";path=./htmldocs";
-	}
-	
 function setCookie(newName, hScore, redirect){
 		//Make cookie expire after 10 mins for testing (CHANGE TO A FEW SECONDS)
 		var expire = new Date();
@@ -100,7 +91,6 @@ class Highscore extends Phaser.Scene {
             gameOver = false;
             this.scene.stop('InputPanel');
             this.scene.stop('Highscore');
-			setCookies(name, highscore, "no");
 			setCookie(name, highscore, "main");
 			window.location.replace("update.php");
         })
@@ -121,7 +111,6 @@ class Highscore extends Phaser.Scene {
             console.log("score clicked");
             this.scene.stop('InputPanel');
             this.scene.stop('Highscore');
-            setCookies(name, highscore, "yes");
 			setCookie(name, highscore, "hs");
 			window.location.replace("update.php");
         })

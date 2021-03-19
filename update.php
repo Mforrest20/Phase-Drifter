@@ -1,20 +1,12 @@
 <?php
 
 //Load Cookies and Set variables from cookie
-if($_COOKIE) {
-	foreach ($_COOKIE as $key=>$val)
-	{
-		if ($key =='newName'){
-			$newName = $val;
-		}
-		else if ($key =='newScore'){
-			$newScore = $val;
-		}
-		else if ($key =='showScore'){
-			$showScorePage = $val;
-		}
-
-	}
+if (isset($_COOKIE['phasedrifter-hs'])){
+	//Unpack JSON
+	$hsCookie = json_decode($_COOKIE["phasedrifter-hs"], true);
+	$newName = $hsCookie['newName'];
+	$newScore = $hsCookie['newScore'];
+	$showScorePage = $hsCookie['nextPage'];
 }
 else
 {
@@ -30,7 +22,6 @@ $configfile = require '../config/config.php';
 $config= $configfile['hsdb'];
 
 $dsn = "mysql:host=".$config['host'].";dbname=".$config['db'].";charset=".$config['charset'];
-echo $dsn."<br>";
 
 try {
      $pdo = new PDO($dsn, $config['user'], $config['pass'], $config['options']);
@@ -44,7 +35,7 @@ $pdo->prepare($sql)->execute([$newScore,$newName,$newDate]);
 //Close the connection
 $conn = null;
 
-if($showScorePage=="yes"){
+if($showScorePage=="hs"){
 	header("Location: highscores.php");
 }
 else{
