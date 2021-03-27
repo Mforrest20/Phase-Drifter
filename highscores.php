@@ -5,7 +5,7 @@
 <!-- PHP code starts with forced HTTPS check -->
 <?php
 //Load credentials config file from remote folder
-$configfile = require '../config/config.php';
+$configfile = require '../../priv_config/config.php';
 $config= $configfile['hsdb'];
 
 $dsn = "mysql:host=".$config['host'].";dbname=".$config['db'].";charset=".$config['charset'];
